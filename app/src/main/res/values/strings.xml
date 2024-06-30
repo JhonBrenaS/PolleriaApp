@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Polleria</string>
+    <string name="nombre_plato">Escriba el platillo</string>
+    <string-array name="Tipoplato">
+        <item>[Seleccione]</item>
+        <item>Pollo A La Leña</item>
+        <item>Parrillas</item>
+        <item>Filetes</item>
+        <item>Ensaladas</item>
+        <item>Postres</item>
+    </string-array>
+
+    <string-array name="platos_fondo">
+        <item>1 Pollo a la Brasa</item>
+        <item>1/2 Pollo a la Brasa</item>
+        <item>1/4 Pollo a la Brasa</item>
+        <item>Mostrito</item>
+    </string-array>
+
+    <string-array name="bebida">
+    <item>Limonada</item>
+    <item>Chicha Morada</item>
+    <item>Pepsi</item>
+    <item>Inka Kola</item>
+    <item>Coca Cola</item>
+    </string-array>
+
+    <string name="facebook_app_id">1172877927083939</string>
+    <string name="fb_login_protocol_scheme">fb1172877927083939</string>
+    <string name="facebook_client_token">17c1f919c9987f43a83e811456ad4935</string>
+
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

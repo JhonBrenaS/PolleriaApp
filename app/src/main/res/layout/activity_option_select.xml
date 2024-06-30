@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/blue"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:weightSum="3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/option_pedidos"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginVertical="20dp"
+            android:background="@drawable/borde"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical"
+           >
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:text="PEDIDOS"
+                />
+
+            <ImageView
+                android:id="@+id/imgOptionPedidos"
+                android:layout_marginTop="10dp"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                app:srcCompat="@drawable/pedido_button" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/optionPlatos"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:background="@drawable/borde"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginVertical="20dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/textView44"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:text="PLATOS"
+                />
+
+            <ImageView
+                android:id="@+id/imgOptionPollo"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:layout_marginTop="10dp"
+                app:srcCompat="@drawable/pollo_button" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/optionBebida"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:background="@drawable/borde"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginVertical="20dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/textView45"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:text="BEBIDAS" />
+
+            <ImageView
+                android:id="@+id/imgOptionPollo2"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:layout_marginTop="10dp"
+                app:srcCompat="@drawable/pollo_button" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
