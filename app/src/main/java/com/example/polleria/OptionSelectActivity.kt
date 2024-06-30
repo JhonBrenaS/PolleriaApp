@@ -47,7 +47,7 @@ class OptionSelectActivity : CallRemotesActivity() {
     }
 
     fun optionBebidas(){
-        var intent=Intent(this,RegisterDrinkActivity::class.java)
+        var intent=Intent(this,ListDrinkActivity::class.java)
         startActivity(intent)
     }
 

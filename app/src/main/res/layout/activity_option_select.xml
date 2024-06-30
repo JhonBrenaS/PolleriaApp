@@ -107,7 +107,7 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_marginTop="10dp"
-                app:srcCompat="@drawable/pollo_button" />
+                app:srcCompat="@drawable/bebidas_option" />
 
         </LinearLayout>
 

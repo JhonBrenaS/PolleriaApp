@@ -3,12 +3,17 @@ package com.example.polleria
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.polleria.adaptador.DrinkAdapter
+import com.example.polleria.adaptador.FoodAdapter
 import com.example.polleria.controller.DrinkController
+import com.example.polleria.controller.FoodsController
 import com.example.polleria.databinding.ActivityListDrinkBinding
+import com.example.polleria.databinding.ActivityListFoodMenuBinding
 import com.example.polleria.entity.Drink
+import com.example.polleria.entity.Food
 import com.example.polleria.utils.AppConfig.Companion.databaseReference
 import com.example.polleria.utils.AppConfig
 import com.example.polleria.utils.showAlertDialog
@@ -19,7 +24,7 @@ import com.google.firebase.database.ValueEventListener
 class ListDrinkActivity : CallRemotesActivity() {
 
     private lateinit var binding: ActivityListDrinkBinding
-    private lateinit var drinksAdapter: DrinkAdapter
+    private lateinit var drinkAdapter: DrinkAdapter
     private val drinkController: DrinkController = DrinkController()
 
 
@@ -31,16 +36,20 @@ class ListDrinkActivity : CallRemotesActivity() {
         AppConfig.BD.writableDatabase
         binding.btnNuevaBebida.setOnClickListener { nuevo() }
 
-        drinksAdapter = DrinkAdapter(arrayListOf())
+        drinkAdapter = DrinkAdapter()
         initFoodsRecyclerView()
         binding.btnSync.setOnClickListener {
             syncFoods()
+        }
+
+        binding.edtNombrePlato.addTextChangedListener {
+            drinkAdapter.filter.filter(it.toString())
         }
     }
 
     private fun initFoodsRecyclerView() {
         binding.rvDrink.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        binding.rvDrink.adapter = drinksAdapter
+        binding.rvDrink.adapter = drinkAdapter
     }
 
     private fun nuevo() {
@@ -69,14 +78,14 @@ class ListDrinkActivity : CallRemotesActivity() {
 
     private fun syncFoods(){
 
-        val drinksOffline = drinkController.findAllOffline()
+        val foods = drinkController.findAllOffline()
 
-        for (drink in drinksOffline){
+        for (food in foods){
             val foodId = databaseReference.child(ConstantsFirebaseChild.CHILD_DRINKS).push().key ?: return
-            drink.idFirebase = foodId
-            databaseReference.child(ConstantsFirebaseChild.CHILD_FOODS).child(foodId).setValue(drink).addOnSuccessListener {
+            food.idFirebase = foodId
+            databaseReference.child(ConstantsFirebaseChild.CHILD_DRINKS).child(foodId).setValue(food).addOnSuccessListener {
                 drinkController.clearTableDrinks()
-                cargarComidas()
+                cargarBebidas()
                 onResume()
             }
         }
@@ -86,15 +95,15 @@ class ListDrinkActivity : CallRemotesActivity() {
     }
 
     private fun getFoodsDB(){
-        drinksAdapter.setData(drinkController.findAll())
+        drinkAdapter.setData(drinkController.findAll())
     }
 
     override fun onResume() {
         if(AppConfig.IS_ONLINE){
             listar()
         }else{
-            val foods = drinkController.findAll()
-            drinksAdapter.setData(foods)
+            val drinks = drinkController.findAll()
+            drinkAdapter.setData(drinks)
         }
 
         binding.btnSync.visibility = if (AppConfig.IS_ONLINE) View.GONE else View.VISIBLE
