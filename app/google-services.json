@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "316186378394",
+    "firebase_url": "https://login-polleria-default-rtdb.firebaseio.com",
     "project_id": "login-polleria",
     "storage_bucket": "login-polleria.appspot.com"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.polleria"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "316186378394-n3no95epsci4kmaqpnidpmsp8ogj70og.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.polleria",
+            "certificate_hash": "8a3b874cf23e1188c5d8577f837aa850334464f3"
+          }
+        },
+        {
+          "client_id": "316186378394-9enm2dl6s8k72g7jqi7gblt9r0j4ml58.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDDwKGJ6izfChhaV4FliLMsccTDwQhoIjE"
@@ -20,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "316186378394-9enm2dl6s8k72g7jqi7gblt9r0j4ml58.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

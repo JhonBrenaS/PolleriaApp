@@ -1,7 +1,6 @@
 package com.example.polleria.entity
 
 class Drink {
-    var id: Int = 0
     var idFirebase: String = ""
     var nombre: String = ""
     var descripcion: String = ""
@@ -11,8 +10,7 @@ class Drink {
     var dateMillis: Long = 0L
     var imagenUrl: String = ""
 
-    constructor(id: Int = 0, idFirebase: String = "",nombre: String, descripcion: String, precio: Double, tipo: String,dateMillis: Long, imagenUrl: String = "",source: String = "ONLINE") {
-        this.id = id
+    constructor(idFirebase: String = "",nombre: String, descripcion: String, precio: Double, tipo: String,dateMillis: Long, imagenUrl: String = "",source: String = "ONLINE") {
         this.idFirebase = idFirebase
         this.nombre = nombre
         this.descripcion = descripcion

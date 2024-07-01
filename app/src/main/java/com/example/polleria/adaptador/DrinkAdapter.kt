@@ -37,14 +37,6 @@ class DrinkAdapter() : RecyclerView.Adapter<ViewDrink>(), Filterable {
             .with(holder.ivFood.context)
             .load(drink.imagenUrl)
             .into(holder.ivFood)
-
-        // Configurar el click listener para cada item
-        holder.itemView.setOnClickListener {
-            val intent = Intent(holder.itemView.context, UpdateFoodActivity::class.java).apply {
-                putExtra("PLATO_ID", drink.idFirebase)
-            }
-            ContextCompat.startActivity(holder.itemView.context, intent, null)
-        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -61,6 +53,7 @@ class DrinkAdapter() : RecyclerView.Adapter<ViewDrink>(), Filterable {
 
     fun setData(drink: List<Drink>) {
         drinkList.clear()
+        drinkListFitered.clear()
         drinkList.addAll(drink)
         drinkListFitered.addAll(drink)
         notifyDataSetChanged()

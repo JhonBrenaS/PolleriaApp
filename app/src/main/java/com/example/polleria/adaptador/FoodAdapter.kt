@@ -60,6 +60,7 @@ class FoodAdapter() : RecyclerView.Adapter<ViewFood>(), Filterable {
 
     fun setData(foods: List<Food>) {
         foodsList.clear()
+        foodsListFiltered.clear()
         foodsList.addAll(foods)
         foodsListFiltered.addAll(foods)
         notifyDataSetChanged()

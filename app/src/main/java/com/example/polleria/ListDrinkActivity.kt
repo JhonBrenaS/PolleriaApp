@@ -67,7 +67,7 @@ class ListDrinkActivity : CallRemotesActivity() {
                         drinkController.save(it)
                     }
                 }
-                getFoodsDB()
+                getDrinkDB()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -94,7 +94,7 @@ class ListDrinkActivity : CallRemotesActivity() {
 
     }
 
-    private fun getFoodsDB(){
+    private fun getDrinkDB(){
         drinkAdapter.setData(drinkController.findAll())
     }
 

@@ -55,7 +55,10 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.16.0")
 
     //facebook
-    implementation("com.facebook.android:facebook-login:17.0.0")
+    implementation("com.facebook.android:facebook-android-sdk:12.3.0")
+
+    //Google
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
 
     //retrofit
     implementation("com.squareup.retrofit2:retrofit:2.5.0")
