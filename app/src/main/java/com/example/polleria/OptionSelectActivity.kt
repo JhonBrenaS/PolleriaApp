@@ -57,9 +57,11 @@ class OptionSelectActivity : CallRemotesActivity() {
             finishAffinity()
         }
 
-
         AppConfig.pd = ProgressDialog(this)
-        cargasDatosRemotosALocal()
+
+        if(AppConfig.IS_ONLINE){
+            cargasDatosRemotosALocal()
+        }
     }
 
     fun optionComidas(){

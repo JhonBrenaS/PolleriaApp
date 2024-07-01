@@ -58,11 +58,12 @@ class RegisterDrinkActivity : AppCompatActivity() {
     private fun grabar() {
         val nombreBebida = binding.edtNombrePlato.text.toString().trim()
         val descripcion = binding.edtDescripcion.text.toString().trim()
+        val tipoBebida = typeDrinkSelect
         val precio = binding.edtPrecio.text.toString().trim()
         val imgUrl = binding.edtImageUrl.text.toString().trim()
 
         // Validar campos
-        if (nombreBebida.isEmpty() || descripcion.isEmpty() || precio.isEmpty()  || imgUrl.isEmpty()) {
+        if (nombreBebida.isEmpty() || descripcion.isEmpty() || precio.isEmpty()  || imgUrl.isEmpty() || tipoBebida == null) {
             showAlert("Por favor completa todos los campos.")
             return
         }
@@ -93,6 +94,8 @@ class RegisterDrinkActivity : AppCompatActivity() {
         }else{
             drink.source = "OFFLINE"
             drinkController.save(drink)
+            showAlert("Bebida registrado correctamente.")
+            limpiarCampos()
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.polleria
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -13,6 +14,7 @@ import com.example.polleria.Service.ApiServicePollo
 import com.example.polleria.adaptador.OrderAdapter
 import com.example.polleria.entity.Order
 import com.example.polleria.utils.ApiUtils
+import com.example.polleria.utils.AppConfig
 import com.example.polleria.utils.hideLoadingDialog
 import com.example.polleria.utils.showAlertDialog
 import com.example.polleria.utils.showLoadingDialog
@@ -24,44 +26,39 @@ class ListOrdersActivity : AppCompatActivity() {
 
     private lateinit var rvPedidos: RecyclerView
     private lateinit var btnAgregarPedido: Button
-
     private lateinit var apiPedido: ApiServicePollo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_list_orders)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-        rvPedidos = findViewById(R.id.rvPollos)
+
+        rvPedidos = findViewById(R.id.rvPedidos)
         btnAgregarPedido = findViewById(R.id.btnAgregarPollo)
         btnAgregarPedido.setOnClickListener { nuevo() }
-
         apiPedido = ApiUtils.getAPIServicePlato()
-        listarPedidos()
+        AppConfig.pd = ProgressDialog(this)
     }
 
     private fun listarPedidos() {
         showLoadingDialog("Cargando pedidos")
         apiPedido.findAll().enqueue(object : Callback<List<Order>> {
             override fun onResponse(call: Call<List<Order>>, response: Response<List<Order>>) {
-                hideLoadingDialog()
                 if (response.isSuccessful) {
+                    hideLoadingDialog()
                     var data = response.body()
-                    var adaptador = OrderAdapter(data!!,{
+                    var adaptador = OrderAdapter(data!!, {
                         var intent = Intent(this@ListOrdersActivity, DetalleOrderActivity::class.java)
                         intent.putExtra("codigo", it)
                         startActivity(intent)
-                    },{
+                    }, {
                         eliminarPedido(it)
                     })
-                        rvPedidos.adapter = adaptador
-                        rvPedidos.layoutManager = LinearLayoutManager(this@ListOrdersActivity)
-                    }
+                    rvPedidos.adapter = adaptador
+                    rvPedidos.layoutManager = LinearLayoutManager(this@ListOrdersActivity)
+                } else {
+                    hideLoadingDialog()
                 }
+            }
             override fun onFailure(call: Call<List<Order>>, t: Throwable) {
                 hideLoadingDialog()
                 showAlertDialog(this@ListOrdersActivity, t.localizedMessage)
@@ -73,10 +70,14 @@ class ListOrdersActivity : AppCompatActivity() {
         showLoadingDialog("Eliminando pedido")
         apiPedido.deleteById(codigo).enqueue(object : Callback<Void>{
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                hideLoadingDialog()
-                showAlertDialog(this@ListOrdersActivity, "Eliminado correctamente"){ dialog, _ ->
-                    dialog.dismiss()
-                    listarPedidos()
+                if (response.isSuccessful){
+                    hideLoadingDialog()
+                    showAlertDialog(this@ListOrdersActivity, "Eliminado correctamente"){ dialog, _ ->
+                        dialog.dismiss()
+                        listarPedidos()
+                    }
+                }else{
+                    hideLoadingDialog()
                 }
             }
 
@@ -91,5 +92,10 @@ class ListOrdersActivity : AppCompatActivity() {
     private fun nuevo() {
         val intent = Intent(this, RegisterOrderActivity::class.java)
         startActivity(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        listarPedidos()
     }
 }

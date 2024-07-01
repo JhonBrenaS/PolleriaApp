@@ -18,6 +18,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -30,6 +31,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var auth: FirebaseAuth
     private val callbackManager = CallbackManager.Factory.create()
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,19 +48,15 @@ class LoginActivity : AppCompatActivity() {
             .build()
 
 
-        val mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
 
-        binding.imgGoogle.setOnClickListener {
-            val signInIntent = mGoogleSignInClient.signInIntent
-            startActivityForResult(signInIntent, RC_SIGN_IN)
-        }
 
         //Facebook
         LoginManager.getInstance().registerCallback(callbackManager,
             object : FacebookCallback<LoginResult> {
                 override fun onSuccess(result: LoginResult) {
-                    handleFacebookAccessToken(result.accessToken)
+                    firebaseAuthWithFacebook(result.accessToken)
                 }
 
                 override fun onCancel() {
@@ -89,10 +87,14 @@ class LoginActivity : AppCompatActivity() {
             val password = binding.loginPassword.text.toString()
             loginFirebase(email, password)
         }
-//
-        binding.imgFB.setOnClickListener {
-            LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile"));
 
+        binding.imgFB.setOnClickListener {
+            LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile"))
+        }
+
+        binding.imgGoogle.setOnClickListener {
+            val signInIntent = mGoogleSignInClient.signInIntent
+            startActivityForResult(signInIntent, RC_SIGN_IN)
         }
     }
 
@@ -115,7 +117,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
-    private fun handleFacebookAccessToken(token: AccessToken) {
+    private fun firebaseAuthWithFacebook(token: AccessToken) {
         Log.d(LoginActivity::class.java.simpleName, "handleFacebookAccessToken:$token")
 
         val credential = FacebookAuthProvider.getCredential(token.token)

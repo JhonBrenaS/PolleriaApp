@@ -1,5 +1,6 @@
 package com.example.polleria
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -12,7 +13,9 @@ import com.example.polleria.databinding.ActivityListFoodMenuBinding
 import com.example.polleria.entity.Food
 import com.example.polleria.utils.AppConfig.Companion.databaseReference
 import com.example.polleria.utils.AppConfig
+import com.example.polleria.utils.hideLoadingDialog
 import com.example.polleria.utils.showAlertDialog
+import com.example.polleria.utils.showLoadingDialog
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -41,6 +44,7 @@ class ListFoodMenuActivity : CallRemotesActivity() {
         binding.edtNombrePlato.addTextChangedListener {
             foodsAdapter.filter.filter(it.toString())
         }
+        AppConfig.pd = ProgressDialog(this)
     }
 
     private fun initFoodsRecyclerView() {
@@ -73,7 +77,7 @@ class ListFoodMenuActivity : CallRemotesActivity() {
     }
 
     private fun syncFoods(){
-
+        showLoadingDialog("Sincronizando Platos")
         val foods = foodsController.findAllOffline()
 
         for (food in foods){
@@ -82,6 +86,7 @@ class ListFoodMenuActivity : CallRemotesActivity() {
             databaseReference.child(ConstantsFirebaseChild.CHILD_FOODS).child(foodId).setValue(food).addOnSuccessListener {
                 foodsController.clearTableFoods()
                 cargarComidas()
+                hideLoadingDialog()
                 onResume()
             }
         }
@@ -102,7 +107,6 @@ class ListFoodMenuActivity : CallRemotesActivity() {
             foodsAdapter.setData(foods)
         }
 
-        binding.btnSync.visibility = if (AppConfig.IS_ONLINE) View.GONE else View.VISIBLE
         super.onResume()
     }
 

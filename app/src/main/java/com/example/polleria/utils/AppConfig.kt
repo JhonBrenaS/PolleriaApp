@@ -23,6 +23,7 @@ class AppConfig : Application(){
         FirebaseApp.initializeApp(this)
         CONTEXT =applicationContext
         IS_ONLINE = true
+
         BD=InitBD()
         databaseReference = FirebaseDatabase.getInstance().reference
     }

@@ -20,40 +20,13 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.075"
-            android:orientation="horizontal"
-            android:layout_margin="10dp">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textField1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/editTextCustom"
-                android:hint="Busqueda por nombre">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtNombrePlato"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:imeOptions="actionSearch"
-                    android:drawableStart="@drawable/ic_search"
-                    android:textColor="@color/black" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
-
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvPollos"
+            android:id="@+id/rvPedidos"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="0dp"
-            android:layout_weight="0.85"/>
+            android:layout_weight="0.92"/>
 
         <Button
             android:id="@+id/btnAgregarPollo"
@@ -61,7 +34,7 @@
             android:layout_height="0dp"
             android:layout_margin="8dp"
             android:padding="15dp"
-            android:layout_weight="0.075"
+            android:layout_weight="0.08"
             android:textAllCaps="false"
             android:text="Nuevo Pedido" />
 

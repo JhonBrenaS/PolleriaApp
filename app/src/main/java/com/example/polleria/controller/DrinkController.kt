@@ -39,7 +39,7 @@ class DrinkController {
     fun findAllOffline(): ArrayList<Drink> {
         val lista = arrayListOf<Drink>()
         val CN = AppConfig.BD.readableDatabase
-        val SQL = "SELECT * FROM $TABLE_NAME WHERE SOURCE = OFFLINE"
+        val SQL = "SELECT * FROM $TABLE_NAME WHERE SOURCE = 'OFFLINE'"
         val RS = CN.rawQuery(SQL, null)
 
         while (RS.moveToNext()) {

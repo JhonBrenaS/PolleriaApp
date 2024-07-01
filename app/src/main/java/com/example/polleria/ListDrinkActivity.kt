@@ -1,5 +1,6 @@
 package com.example.polleria
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -16,11 +17,14 @@ import com.example.polleria.entity.Drink
 import com.example.polleria.entity.Food
 import com.example.polleria.utils.AppConfig.Companion.databaseReference
 import com.example.polleria.utils.AppConfig
+import com.example.polleria.utils.hideLoadingDialog
 import com.example.polleria.utils.showAlertDialog
+import com.example.polleria.utils.showLoadingDialog
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
+// Se trae las bebidas de firebase y se guarda en SQLite
 class ListDrinkActivity : CallRemotesActivity() {
 
     private lateinit var binding: ActivityListDrinkBinding
@@ -45,6 +49,8 @@ class ListDrinkActivity : CallRemotesActivity() {
         binding.edtNombrePlato.addTextChangedListener {
             drinkAdapter.filter.filter(it.toString())
         }
+
+        AppConfig.pd = ProgressDialog(this)
     }
 
     private fun initFoodsRecyclerView() {
@@ -58,34 +64,38 @@ class ListDrinkActivity : CallRemotesActivity() {
     }
 
     private fun listar() {
-        databaseReference.child(ConstantsFirebaseChild.CHILD_DRINKS).orderByChild(ConstantsFirebaseChild.CHILD_DATE_MILLIS).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                drinkController.clearTableDrinks()
-                for (row in snapshot.children) {
-                    val bean = row.getValue(Drink::class.java)
-                    bean?.let {
-                        drinkController.save(it)
+        if(AppConfig.IS_ONLINE){
+            databaseReference.child(ConstantsFirebaseChild.CHILD_DRINKS).orderByChild(ConstantsFirebaseChild.CHILD_DATE_MILLIS).addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    drinkController.clearTableDrinks()
+                    for (row in snapshot.children) {
+                        val bean = row.getValue(Drink::class.java)
+                        if(bean != null){
+                            drinkController.save(bean)
+                        }
                     }
+                    getDrinkDB()
                 }
-                getDrinkDB()
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                showAlertDialog(this@ListDrinkActivity, error.message)
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    showAlertDialog(this@ListDrinkActivity, error.message)
+                }
+            })
+        }else{
+            getDrinkDB()
+        }
     }
 
     private fun syncFoods(){
-
+        showLoadingDialog("Sincronizando Bebidas")
         val foods = drinkController.findAllOffline()
-
         for (food in foods){
             val foodId = databaseReference.child(ConstantsFirebaseChild.CHILD_DRINKS).push().key ?: return
             food.idFirebase = foodId
             databaseReference.child(ConstantsFirebaseChild.CHILD_DRINKS).child(foodId).setValue(food).addOnSuccessListener {
                 drinkController.clearTableDrinks()
-                cargarBebidas()
+                hideLoadingDialog()
+                cargarBebidasAgain()
                 onResume()
             }
         }
@@ -98,6 +108,26 @@ class ListDrinkActivity : CallRemotesActivity() {
         drinkAdapter.setData(drinkController.findAll())
     }
 
+    fun cargarBebidasAgain(){
+        AppConfig.databaseReference.child(ConstantsFirebaseChild.CHILD_DRINKS).addValueEventListener(object :
+            ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                drinkController.clearTableDrinks()
+                for (row in snapshot.children) {
+                    val bean = row.getValue(Drink::class.java)
+                    bean?.let {
+                        drinkController.save(it)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                hideLoadingDialog()
+                showAlertDialog(this@ListDrinkActivity, "Bebidas " + error.message)
+            }
+        })
+    }
+
     override fun onResume() {
         if(AppConfig.IS_ONLINE){
             listar()
@@ -105,8 +135,6 @@ class ListDrinkActivity : CallRemotesActivity() {
             val drinks = drinkController.findAll()
             drinkAdapter.setData(drinks)
         }
-
-        binding.btnSync.visibility = if (AppConfig.IS_ONLINE) View.GONE else View.VISIBLE
         super.onResume()
     }
 

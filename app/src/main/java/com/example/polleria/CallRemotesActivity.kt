@@ -28,10 +28,6 @@ open class CallRemotesActivity: AppCompatActivity() {
         cargarTipoBebidas()
     }
 
-    fun limpiarTodosLosDatos(){
-
-    }
-
     fun cargarTipoBebidas(){
         showLoadingDialog("Cargando datos de Firebase")
         AppConfig.databaseReference.child(ConstantsFirebaseChild.CHILD_TYPE_DRINKS).addValueEventListener(object :

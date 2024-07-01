@@ -96,6 +96,7 @@ class RegisterOrderActivity : AppCompatActivity() {
         btnGrabar.setOnClickListener { grabar() }
         btnVolver.setOnClickListener { volver() }
         spnPlatoFondo.setText("Seleccione", false)
+        spnBebidas.setText("Seleccione", false)
 
         spnPlatoFondo.setOnItemClickListener { _, _, position, _ ->
             foodsSelected = foods[position]
